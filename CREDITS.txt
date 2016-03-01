@@ -1,0 +1,22 @@
+=== Credits ===
+
+Thanks to:
+- DMA for the original game
+- ccexplore for his research about the .dat and grafic file formats
+- rt for providing information about the Level-File-Format
+- ericlangedijk for his Lemmix-clone at http://ericenzwaan.nl/eric/lemmings/lemmix.htm
+- The Lemmings Archive for providing all this resources at http://www.camanis.net/lemmings/tools.php
+
+
+Original credits...
+    Lemmings by DMA Design
+    Programming by Russell Kay
+    Animation by Gary Timmons
+    Graphics by Scott Johnston
+    Music by Brian Johnston & Tim Wright
+    PC Music by Tony Williams
+    Copyright 1991 Psygnosis Ltd.
+
+
+Thank you all for this great Game
+  Thomas
