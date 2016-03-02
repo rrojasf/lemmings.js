@@ -57,6 +57,7 @@ function createGame(gameCavas, onGameLoaded)
   game.releaseRate = 50;
   game.releaseRateMin = 50;
   game.nextReleaseTick = 10;
+  game.releaseCount = 3;
 
   game.decReleaseRate = function()
   {
@@ -155,8 +156,12 @@ function createGame(gameCavas, onGameLoaded)
     {
       game.tick ++;
 
+      if (game.releaseCount > 0)
+      {
       if (game.tick >= game.nextReleaseTick)
       {
+        game.releaseCount--;
+
         //- get the pos of the entry point
         var pos = game.levelHandler.getEntryPos();
 
@@ -165,6 +170,7 @@ function createGame(gameCavas, onGameLoaded)
   
         //- next Lemming need to be released in ticks
         game.nextReleaseTick = game.tick + (Math.floor((99 - game.releaseRate) / 2) + 4);
+      }
       }
 
       var c = game.lemmings.length;
@@ -185,13 +191,12 @@ function createGame(gameCavas, onGameLoaded)
     var outW =  game.displayCanvas.width;
     var outH =  game.displayCanvas.height;
 
-    var guiScale = outW / game.gameGui.width;
-    var guiOutHeight = game.gameGui.height * guiScale;
+    game.guiScale = outW / game.gameGui.width;
+    var guiOutHeight = game.gameGui.height * game.guiScale;
 
     var outGameH = outH - guiOutHeight;
 
     game.guiPosY = outGameH;
-    game.guiScale = guiScale;
 
     //-----------
     //- Draw Game
@@ -214,10 +219,18 @@ function createGame(gameCavas, onGameLoaded)
 
     //- Display Layers
     var dW = gameW - game.viewX; //- display width
-    if ((dW * game.viewScale) > outW) dW = outW / game.viewScale;
+    if ((dW * game.viewScale) > outW) 
+    {
+      dW = outW / game.viewScale;
+      //game.viewScale = outW / dW;
+    }
 
     var dH = gameH - game.viewY; //- display height
-    if ((dH * game.viewScale) > outGameH) dH = outGameH / game.viewScale;
+    if ((dH * game.viewScale) > outGameH)
+    {
+      dH = outGameH / game.viewScale;
+      //game.viewScale = outH / dH;
+    }
 
     //- drawImage(image,sx,sy,sw,sh,dx,dy,dw,dh)
     game.displayContext.drawImage(game.gameCanvas, game.viewX, game.viewY, dW, dH, 0, 0, dW * game.viewScale , dH * game.viewScale);

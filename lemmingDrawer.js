@@ -28,7 +28,7 @@ function LemmingDrawer(gameObject)
     self.registerAnimation(state.UNKNOWN,  1, fr, 2, 16, 10, 1); //- jumping (r)
     self.registerAnimation(state.WALKING, -1, fr, 2, 16, 10, 8); //- walking (l)
     self.registerAnimation(state.UNKNOWN, -1, fr, 2, 16, 10, 1); //- jumping (l)
-    self.registerAnimation(state.UNKNOWN,  1, fr, 3, 16, 14, 16); //- digging
+    self.registerAnimation(state.DIGGING,  0, fr, 3, 16, 14, 16); //- digging
     self.registerAnimation(state.UNKNOWN,  1, fr, 2, 16, 12, 8); //- climbing (r)
     self.registerAnimation(state.UNKNOWN, -1, fr, 2, 16, 12, 8); //- climbing (l)
     self.registerAnimation(state.UNKNOWN,  1, fr, 2, 16, 10, 16); //- drowning
@@ -69,7 +69,15 @@ function LemmingDrawer(gameObject)
     //- add animation to cach
     var newId = (self.animations.push(animation) - 1);
 
-    self.lemmingAnimation[state.id * 2 + ((dir > 0)?1:0)] = newId;
+    if (dir >= 0)
+    {
+      self.lemmingAnimation[state.id * 2 + 1] = newId;
+    }
+
+    if (dir <= 0)
+    {
+      self.lemmingAnimation[state.id * 2 + 0] = newId;
+    }
   }
 
 

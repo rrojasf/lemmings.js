@@ -29,9 +29,12 @@ function LevelHandler(gameObject)
   this.screenPositionX = 0;
   this.GraphicSet1 = 0;
   this.GraphicSet2 = 0;
+  this.isSuperLemming = false;
+
   this.objects = new Array(); //-> LevelObject
   this.terrains = new Array(); //-> LevelObject
   this.dfr = null;
+
 
   this.game.gameTerrain = null;
 
@@ -82,12 +85,12 @@ function LevelHandler(gameObject)
       self.skills[SKILL.MINER.value] = fr.readWord();
       self.skills[SKILL.DIGGER.value] = fr.readWord();
 
-
-
       self.screenPositionX = fr.readWord();
 
       self.GraphicSet1 = fr.readWord();
       self.GraphicSet2 = fr.readWord();
+
+      self.isSuperLemming = (fr.readWord() != 0);
 
       ////////////////
       //- read objects
@@ -103,8 +106,8 @@ function LevelHandler(gameObject)
         newOb.id = fr.readWord();
 
         var flags = fr.readWord();
-        newOb.isUpsideDown = ((flags & 0x0080) > 0);
-        newOb.noOverwrite = ((flags & 0x8000) > 0);
+        newOb.isUpsideDown =  ((flags & 0x0080) > 0);
+        newOb.noOverwrite =   ((flags & 0x8000) > 0);
         newOb.onlyOverwrite = ((flags & 0x4000) > 0);
 
         if (flags == 0) continue;

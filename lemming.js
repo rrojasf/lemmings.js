@@ -6,7 +6,8 @@ function Lemming(gameObject, x, y)
   this.STATE = {
     UNKNOWN : {id:0, name: "unknown"},
     WALKING : {id:1, name: "Walk"},
-    FALLING : {id:3, name: "fall"}
+    FALLING : {id:3, name: "fall"},
+    DIGGING : {id:4, name: "digging"}
   };
 
 
@@ -141,9 +142,23 @@ function Lemming(gameObject, x, y)
           //- can not fall anymore -> walk
           self.state = self.STATE.WALKING;
           break;
+
+
+        case self.STATE.DIGGING:
+          //- 
+          self.y += 1;
+          break;
+
       }
-    
-    
+  }
+
+
+  this.calcDistance = function(destX, destY)
+  {
+    var a = self.x - destX;
+    var b = self.y - destY;
+
+    return (a * a + b * b);
   }
 
 }

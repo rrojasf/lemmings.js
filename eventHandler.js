@@ -52,27 +52,30 @@ function EventHandler(gameObject)
 
   });
 
+
   this.game.displayCanvas.addEventListener("mousedown", function(e)
   {
     var parentPosition = getPosition(e.currentTarget);
     var x = e.clientX - parentPosition.x;
     var y = e.clientY - parentPosition.y;
 
-    if (self.intervalId!=0) clearInterval(self.intervalId);
+    if (self.intervalId != 0) clearInterval(self.intervalId);
     self.intervalId = 0;
 
     if (y >= self.game.guiPosY)
     {
+      //- the user clicked in to the GUI
+
+      //- transforme the coordinates to the gui-coordinat-system
       var guiX = x / self.game.guiScale;
       var guiY = (y - self.game.guiPosY) / self.game.guiScale;
 
       function callGameGuiMouseClick()
       {
-        //- the user clicked in to the GUI
         return self.game.gameGui.onClick(guiX, guiY);
       }
 
-      //- if the function retuns TRUE then this button can be called periodically
+      //- if the function retuns TRUE then this button shoud be called periodically
       if (callGameGuiMouseClick())
       {
         self.intervalId = setInterval(callGameGuiMouseClick, 50);
@@ -81,6 +84,34 @@ function EventHandler(gameObject)
     }
     else
     {
+      //- user clicked in the game area
+
+      //- transforme the coordinates to the game-coordinat-system
+      var gameX = x / self.game.viewScale + self.game.viewX ;
+      var gameY = y / self.game.viewScale + self.game.viewY ;
+
+      //- find nearest lemming the user clicked at.
+      var bestDist = 10000000;
+      var bestIndex = -1;
+
+      var l = self.game.lemmings.length;
+      for (var i = 0; i < l; i++)
+      {
+        var dist = self.game.lemmings[i].calcDistance(gameX, gameY);
+        if (dist < bestDist)
+        {
+          bestDist = dist;
+          bestIndex = i;
+        }
+      }
+
+      if (bestDist < 60) //- sqrt(60) = 7 pixel
+      {
+        //console.log("dist: "+ bestDist);
+        var lem = self.game.lemmings[bestIndex];
+        lem.state=lem.STATE.DIGGING;
+      }
+
       //- save start of Mousedown
       self.mouseDownX = e.clientX;
       self.mouseDownY = e.clientY;
@@ -102,6 +133,7 @@ function EventHandler(gameObject)
     self.mouseDownY = -1;
     self.mouseDownButton = -1;
   });
+
 
   this.game.displayCanvas.addEventListener("mouseleave", function(e)
   {
