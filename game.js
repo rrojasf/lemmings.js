@@ -106,6 +106,11 @@ function createGame(gameCavas, onGameLoaded)
 
   });
 
+  game.levelIndexProvider = new LevelIndexProvider(game);
+  game.levelIndexProvider.load();
+
+alert(game.levelIndexProvider.createCode(60,100));
+
   game.levelHandler = new LevelHandler(game);
   game.levelHandler.load(onLevelLoaded, game.levelId);
 

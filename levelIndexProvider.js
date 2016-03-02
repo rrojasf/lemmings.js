@@ -18,7 +18,7 @@ function LevelIndexProvider(gameObject)
 
   this.load = function(onLoadCallback)
   {
-     self.fileLoader.load("oddtable.dat", function(fr)
+     self.game.fileLoader.load("oddtable.dat", function(fr)
      {
        var lIinfo = new LevelInfo();
 
@@ -47,21 +47,21 @@ function LevelIndexProvider(gameObject)
 
   this.levelIndex = new Array(4);
 
-  this.levelIndex[0] = { 147, 155, 157, 149, 151, 153, 159,  14,  22,  54,
+  this.levelIndex[0] = [ 147, 155, 157, 149, 151, 153, 159,  14,  22,  54,
                           70,  16,  29,  32,  38,  42,  48,  72,  84, 104,
-                         138,  23,  68,  96,  98, 116,  78, 100, 108, 134};
+                         138,  23,  68,  96,  98, 116,  78, 100, 108, 134];
 
-  this.levelIndex[1] = {   1,  30,  36,  50,  52,  56,  58,  80, 102, 120,
+  this.levelIndex[1] = [   1,  30,  36,  50,  52,  56,  58,  80, 102, 120,
                          128, 130, 136,   5, 148, 152, 154, 156, 160,   7,
-                          11,  13,  15,  17,  19,  21,  25,  27,  33,  31};
+                          11,  13,  15,  17,  19,  21,  25,  27,  33,  31];
 
-  this.levelIndex[2] = { 37, 39, 41, 43, 45, 47, 49, 51, 53, 55,
+  this.levelIndex[2] = [ 37, 39, 41, 43, 45, 47, 49, 51, 53, 55,
                          57, 59, 61, 63,  3, 65, 67, 69, 71, 73,
-                         75, 77, 79, 81, 83, 85, 87, 89, 35, 111};
+                         75, 77, 79, 81, 83, 85, 87, 89, 35, 111];
 
-  this.levelIndex[2] = { 91,  93,  95,  97,  99, 101, 103, 105, 107, 109,
+  this.levelIndex[2] = [ 91,  93,  95,  97,  99, 101, 103, 105, 107, 109,
                         112, 113, 115, 117, 119, 121, 123, 125, 127, 150,
-                        129,   9, 131, 133, 135, 137, 139, 141, 143, 145 };
+                        129,   9, 131, 133, 135, 137, 139, 141, 143, 145 ];
 
   this.CodeBase = "AJHLDHBBCJ";
 
@@ -81,12 +81,13 @@ function LevelIndexProvider(gameObject)
   {
     //- spurious can be used to "randomize" the code output
     if (typeof spurious === "undefined") spurious = 0;
+    if (typeof percent === "undefined") percent = 100;
 
     //- clear bit 3 and 4
     spurious = spurious & 0x67;
 
 
-    var char = new Array(9);
+    var result = new Array(9);
     var Lbit = new Array(7);
     var Pbit = new Array(7);
     var Sbit = new Array(7);
@@ -127,7 +128,7 @@ Sbit[6] = 2;        //-  S6 at bit 1, nibble 5 (!)  Nibble 7 has 0 S-bits!
 var Ofc = Array(self.CodeBase.length);
     for (var i = 0; i < self.CodeBase.length; ++i)
     {
-        Ofc[i] = self.CodeBase.charCodeAt(i));
+        Ofc[i] = self.CodeBase.charCodeAt(i);
     }
 
 
@@ -168,7 +169,7 @@ var Ofc = Array(self.CodeBase.length);
       var I = (j + 8 - (levelIndex % 8)) % 7;
 
       //- assemble the rotated character.  nibble is nibble info * bitmask
-      Char[I] = Of[j] + nibble / bitmask
+      result[I] = Ofc[j] + nibble / bitmask
 
       // next level/percent/spurious bit
       bitmask = bitmask * 2;
@@ -178,25 +179,25 @@ var Ofc = Array(self.CodeBase.length);
 
     //- assemble both level characters
     //- plain level code
-    Char[7] = Ofc[7] + (levelIndex & 0x0F);        
-    Char[8] = Ofc[8] + (levelIndex & 0xF0) / 16);
+    result[7] = Ofc[7] + (levelIndex & 0x0F);        
+    result[8] = Ofc[8] + (levelIndex & 0xF0) / 16;
 
     //- calculate checksum: add all first 9 ASCII values together
     var csum = 0;
     for (var i=0; i < 9; i++)
     {
-      csum = csum + Char[I];
+      csum = csum + result[i];
     }
 
     // assemble checksum character, use only the low nibble of the sum
-    Char[9] = Ofc[9] + (csum & 0xHF)
+    result[9] = Ofc[9] + (csum & 0x0F);
 
     //- combine all characters (with rotated indices) to a proper level string
     var Levelcode = "";
 
     for (var i=0; i < 10; i++)
     {
-      Levelcode += String.fromCharCode(Char[I]);
+      Levelcode += String.fromCharCode(result[i]);
     }
 
     return Levelcode;
