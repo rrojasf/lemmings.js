@@ -53,6 +53,19 @@ function createGame(gameCavas, onGameLoaded)
   //- available amount of skills  
   game.skills = new Uint8Array(8);
 
+
+  game.VERSION = {
+    LEMMINGS : {value: 1, name : "Lemmings original"},
+    OHNO     : {value: 2, name : "Oh No! More Lemmings"},
+    HOLIDAY93: {value: 3, name : "Holiday 93"},
+    HOLIDAY94: {value: 4, name : "Holiday 94"},
+    XMAS91   : {value: 5, name : "X-mas 91 demo"},
+    XMAS92   : {value: 6, name : "X-mas 92 demo"}
+  };
+
+  
+  game.version = game.VERSION.LEMMINGS;
+
   //- current relese rate
   game.releaseRate = 50;
   game.releaseRateMin = 50;
@@ -91,10 +104,34 @@ function createGame(gameCavas, onGameLoaded)
   //- Game Time
   game.tick = 0;
 
+
+  game.codeGenerator = new CodeGenerator(game);
+  //-- check
+  // var c = game.codeGenerator.createCode(107,100);
+  // c == "JMDMGINMIV"
+  //--------
+
+  game.levelIndexProvider = new LevelIndexProvider(game);
+  game.levelIndexProvider.load();
+
+
+  game.levelIndex = 0;
+
+
   //- URL Parameter: load Level Number...
   var hash = window.location.hash.substring(1);
-  game.levelId = Number.parseInt(hash);
-  if (isNaN(game.levelId)) game.levelId=0;
+  
+  if (hash.length == 10)
+  {
+    var levelInfo = game.codeGenerator.reverseCode(hash);
+
+    
+  }
+  else
+  {
+    game.levelId = Number.parseInt(hash);
+    if (isNaN(game.levelId)) game.levelId=0;
+  }
 
   game.fileLoader = new FileLoader();
 
@@ -106,10 +143,6 @@ function createGame(gameCavas, onGameLoaded)
 
   });
 
-  game.levelIndexProvider = new LevelIndexProvider(game);
-  game.levelIndexProvider.load();
-
-alert(game.levelIndexProvider.createCode(107,100));
 
   game.levelHandler = new LevelHandler(game);
   game.levelHandler.load(onLevelLoaded, game.levelId);
