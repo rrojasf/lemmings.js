@@ -112,7 +112,7 @@ function createGame(gameCavas, onGameLoaded)
   //--------
 
   game.levelIndexProvider = new LevelIndexProvider(game);
-  game.levelIndexProvider.load();
+  //game.levelIndexProvider.load();
 
 
   game.levelIndex = 0;
@@ -125,12 +125,16 @@ function createGame(gameCavas, onGameLoaded)
   {
     var levelInfo = game.codeGenerator.reverseCode(hash);
 
-    
+    game.levelIndex = levelInfo.levelIndex;
+    game.version = levelInfo.lemmingsVersion;
   }
   else
   {
-    game.levelId = Number.parseInt(hash);
-    if (isNaN(game.levelId)) game.levelId=0;
+    var levelPos = Number.parseInt(hash);
+    if (!isNaN(levelPos))
+    {
+      game.levelIndex = levelPos;
+    }
   }
 
   game.fileLoader = new FileLoader();
@@ -145,7 +149,7 @@ function createGame(gameCavas, onGameLoaded)
 
 
   game.levelHandler = new LevelHandler(game);
-  game.levelHandler.load(onLevelLoaded, game.levelId);
+  game.levelHandler.load(onLevelLoaded, game.levelIndex);
 
   game.eventHandler = new EventHandler(game);
 
@@ -156,7 +160,7 @@ function createGame(gameCavas, onGameLoaded)
     game.levelDrawer.load(onLevelDrawn);
     game.viewX = game.levelHandler.screenPositionX;
 
-    for (var i=0; i<10; i++)
+    for (var i = 0; i < 10; i++)
     {
       game.skills[i] = game.levelHandler.skills[i];
     }

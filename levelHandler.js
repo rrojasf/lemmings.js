@@ -57,15 +57,17 @@ function LevelHandler(gameObject)
   /// Load a Level
   this.load = function(onLoadDoneCallback, levelId)
   {
+    var levelPos = self.game.levelIndexProvider.LevelFileFromLevelIndex(levelId);
+
     self.dfr = new DatFileReader(self.game);
-    self.dfr.read("lemmings/LEVEL00"+ Math.floor(levelId / 100) +".DAT", onLevelLoadDone);
+    self.dfr.read("lemmings/LEVEL00"+ levelPos.fileId +".DAT", onLevelLoadDone);
    
 
     function onLevelLoadDone()
     {
       console.log("Levels in file: "+ self.dfr.getPartCount());
 
-      var fr = self.dfr.getPart(levelId % 100);
+      var fr = self.dfr.getPart(levelPos.fileLevelIndex);
 
       fr.setOffset(0);
 
