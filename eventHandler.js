@@ -108,16 +108,17 @@ function EventHandler(gameObject)
       if (bestDist < 60) //- sqrt(60) = 7 pixel
       {
         //console.log("dist: "+ bestDist);
-        var lem = self.game.lemmings[bestIndex];
-        lem.state=lem.STATE.DIGGING;
+        self.game.gameGui.onClickLemming(bestIndex);
       }
-
-      //- save start of Mousedown
-      self.mouseDownX = e.clientX;
-      self.mouseDownY = e.clientY;
-      self.mouseDownButton = e.button;
-      self.mouseDownViewX = self.game.viewX;
-      self.mouseDownViewY = self.game.viewY;
+      else
+      {
+        //- save start of Mousedown
+        self.mouseDownX = e.clientX;
+        self.mouseDownY = e.clientY;
+        self.mouseDownButton = e.button;
+        self.mouseDownViewX = self.game.viewX;
+        self.mouseDownViewY = self.game.viewY;
+      }
     }
 
   });

@@ -29,27 +29,27 @@ function LemmingDrawer(gameObject)
     self.registerAnimation(state.WALKING, -1, fr, 2, 16, 10, 8); //- walking (l)
     self.registerAnimation(state.UNKNOWN, -1, fr, 2, 16, 10, 1); //- jumping (l)
     self.registerAnimation(state.DIGGING,  0, fr, 3, 16, 14, 16); //- digging
-    self.registerAnimation(state.UNKNOWN,  1, fr, 2, 16, 12, 8); //- climbing (r)
-    self.registerAnimation(state.UNKNOWN, -1, fr, 2, 16, 12, 8); //- climbing (l)
+    self.registerAnimation(state.CLIMBING, 1, fr, 2, 16, 12, 8); //- climbing (r)
+    self.registerAnimation(state.CLIMBING,-1, fr, 2, 16, 12, 8); //- climbing (l)
     self.registerAnimation(state.UNKNOWN,  1, fr, 2, 16, 10, 16); //- drowning
     self.registerAnimation(state.UNKNOWN,  1, fr, 2, 16, 12, 8); //- post-climb (r)
     self.registerAnimation(state.UNKNOWN, -1, fr, 2, 16, 12, 8); //- post-climb (l)
-    self.registerAnimation(state.UNKNOWN,  1, fr, 3, 16, 13, 16); //- brick-laying (r)
-    self.registerAnimation(state.UNKNOWN, -1, fr, 3, 16, 13, 16); //- brick-laying (l)
-    self.registerAnimation(state.UNKNOWN,  1, fr, 3, 16, 10, 32); //- bashing (r)
-    self.registerAnimation(state.UNKNOWN, -1, fr, 3, 16, 10, 32); //- bashing (l)
-    self.registerAnimation(state.UNKNOWN,  1, fr, 3, 16, 13, 24); //- mining (r)
-    self.registerAnimation(state.UNKNOWN, -1, fr, 3, 16, 13, 24); //- mining (l)
+    self.registerAnimation(state.BUILDING, 1, fr, 3, 16, 13, 16); //- brick-laying (r)
+    self.registerAnimation(state.BUILDING,-1, fr, 3, 16, 13, 16); //- brick-laying (l)
+    self.registerAnimation(state.BASHING,  1, fr, 3, 16, 10, 32); //- bashing (r)
+    self.registerAnimation(state.BASHING, -1, fr, 3, 16, 10, 32); //- bashing (l)
+    self.registerAnimation(state.MINING,   1, fr, 3, 16, 13, 24); //- mining (r)
+    self.registerAnimation(state.MINING,  -1, fr, 3, 16, 13, 24); //- mining (l)
     self.registerAnimation(state.FALLING,  1, fr, 2, 16, 10, 4); //- falling (r)
     self.registerAnimation(state.FALLING, -1, fr, 2, 16, 10, 4); //- falling (l)
     self.registerAnimation(state.UNKNOWN,  1, fr, 3, 16, 16, 4); //- pre-umbrella (r)
-    self.registerAnimation(state.UNKNOWN,  1, fr, 3, 16, 16, 4); //- umbrella (r)
+    self.registerAnimation(state.FLYING,   0, fr, 3, 16, 16, 4); //- umbrella (r)
     self.registerAnimation(state.UNKNOWN, -1, fr, 3, 16, 16, 4); //- pre-umbrella (l)
     self.registerAnimation(state.UNKNOWN, -1, fr, 3, 16, 16, 4); //- umbrella (l)
     self.registerAnimation(state.UNKNOWN,  1, fr, 2, 16, 10, 16); //- splatting
     self.registerAnimation(state.UNKNOWN,  1, fr, 2, 16, 13, 8); //- exiting
     self.registerAnimation(state.UNKNOWN,  1, fr, 4, 16, 14, 14); //- fried
-    self.registerAnimation(state.UNKNOWN,  1, fr, 2, 16, 10, 16); //- blocking
+    self.registerAnimation(state.BLOCKING, 0, fr, 2, 16, 10, 16); //- blocking
     self.registerAnimation(state.UNKNOWN,  1, fr, 2, 16, 10, 8); //- shrugging (r)
     self.registerAnimation(state.UNKNOWN, -1, fr, 2, 16, 10, 8); //- shrugging (l)
     self.registerAnimation(state.UNKNOWN,  1, fr, 2, 16, 10, 16); //- oh-no-ing

@@ -4,10 +4,16 @@ function Lemming(gameObject, x, y)
 {
 
   this.STATE = {
-    UNKNOWN : {id:0, name: "unknown"},
-    WALKING : {id:1, name: "Walk"},
-    FALLING : {id:3, name: "fall"},
-    DIGGING : {id:4, name: "digging"}
+    UNKNOWN  : {id:0,  name: "unknown"},
+    WALKING  : {id:1,  name: "walk"},
+    FALLING  : {id:3,  name: "fall"},
+    FLYING   : {id:4,  name: "flying"},
+    DIGGING  : {id:5,  name: "digging"},
+    BLOCKING : {id:6,  name: "blocking"},
+    BUILDING : {id:7,  name: "build"},
+    BASHING  : {id:8,  name: "bush"},
+    MINING   : {id:9,  name: "mining"},
+    CLIMBING : {id:10, name: "climbing"},
   };
 
 
@@ -16,6 +22,9 @@ function Lemming(gameObject, x, y)
   this.y = y;
   this.dir = 1;
   this.state = this.STATE.WALKING;
+  this.hasUmbrella = false;
+  this.canClimb = false;
+  this.ticksToDie = 1000; //- if this number is 0 the lemming explode
 
   var self = this;
 
@@ -143,6 +152,8 @@ function Lemming(gameObject, x, y)
           self.state = self.STATE.WALKING;
           break;
 
+        case self.STATE.BLOCKING:
+          break;
 
         case self.STATE.DIGGING:
           //- 

@@ -66,6 +66,8 @@ function createGame(gameCavas, onGameLoaded)
   
   game.version = game.VERSION.LEMMINGS;
 
+  game.TICKS_PER_SECOND = 15;
+
   //- current relese rate
   game.releaseRate = 50;
   game.releaseRateMin = 50;
@@ -188,7 +190,7 @@ function createGame(gameCavas, onGameLoaded)
   game.startGame = function()
   {
     //- start game loop
-    window.setInterval(function() {game.gameLoop(); }, 1000 / 15);
+    window.setInterval(function() {game.gameLoop(); }, 1000 / game.TICKS_PER_SECOND);
   }
 
 

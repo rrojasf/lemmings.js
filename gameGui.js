@@ -15,12 +15,12 @@ function GameGui(gameObject)
 
 
   this.letters = null;
-  this.letterPos = new Uint8Array(12);
+  this.skillPos = new Array();
 
-  this.RELESERATE_MIN = 10;
-  this.RELESERATE = 11;
+  this.POS_INDEX_RELESERATE_MIN = 0;
+  this.POS_INDEX_RELESERATE = 1;
 
-  this.selectionPos = gameObject.SKILL.CLIMBER.value;
+  this.selectedPos = 2;
 
   var self = this;
 
@@ -43,18 +43,26 @@ function GameGui(gameObject)
     this.letters = new ImageSet(self.game.palette.data);
     this.letters.loadFromFile(fr2, 1, 8, 8, 20, 2);
 
-    self.letterPos[self.RELESERATE_MIN] = 16 * 0; //- relese count min
-    self.letterPos[self.RELESERATE]     = 16 * 1; //- relese count max
-
     var SKILL = self.game.SKILL;
-    self.letterPos[SKILL.CLIMBER.value] = 16 * 2;
-    self.letterPos[SKILL.FLOATER.value] = 16 * 3;
-    self.letterPos[SKILL.BOMBER.value]  = 16 * 4;
-    self.letterPos[SKILL.BLOCKER.value] = 16 * 5;
-    self.letterPos[SKILL.BUILDER.value] = 16 * 6;
-    self.letterPos[SKILL.BASHER.value]  = 16 * 7;
-    self.letterPos[SKILL.MINER.value]   = 16 * 8;
-    self.letterPos[SKILL.DIGGER.value]  = 16 * 9;
+
+    self.skillPos.push({skill:null,          pos:0});
+    self.skillPos.push({skill:null,          pos:0});
+    self.skillPos.push({skill:SKILL.CLIMBER, pos:0});
+    self.skillPos.push({skill:SKILL.FLOATER, pos:0});
+    self.skillPos.push({skill:SKILL.BOMBER,  pos:0});
+    self.skillPos.push({skill:SKILL.BLOCKER, pos:0});
+    self.skillPos.push({skill:SKILL.BUILDER, pos:0});
+    self.skillPos.push({skill:SKILL.BASHER,  pos:0});
+    self.skillPos.push({skill:SKILL.MINER,   pos:0});
+    self.skillPos.push({skill:SKILL.DIGGER,  pos:0});
+    self.skillPos.push({skill:null,          pos:0});
+    self.skillPos.push({skill:null,          pos:0});
+
+    for (var i = 0; i < self.skillPos.length; i++)
+    {
+      self.skillPos[i].pos = 16 * i;
+    }
+
   }
 
 
@@ -65,21 +73,18 @@ function GameGui(gameObject)
     var skills = self.game.skills;
     var SKILL  = self.game.SKILL;
 
-    self.printSkill(SKILL.CLIMBER.value);
-    self.printSkill(SKILL.FLOATER.value);
-    self.printSkill(SKILL.BOMBER.value);
-    self.printSkill(SKILL.BLOCKER.value);
-    self.printSkill(SKILL.BUILDER.value);
-    self.printSkill(SKILL.BASHER.value);
-    self.printSkill(SKILL.MINER.value);
-    self.printSkill(SKILL.DIGGER.value);
+    for (var i = 0; i < self.skillPos.length; i++)
+    {
+      if (self.skillPos[i].skill != null) self.printSkill(i);
+    }
 
-    self.printNumber(self.game.releaseRateMin, self.letterPos[self.RELESERATE_MIN]);
-    self.printNumber(self.game.releaseRate   , self.letterPos[self.RELESERATE]);
+
+    self.printNumber(self.game.releaseRateMin, self.skillPos[self.POS_INDEX_RELESERATE_MIN].pos);
+    self.printNumber(self.game.releaseRate   , self.skillPos[self.POS_INDEX_RELESERATE].pos);
 
 
 
-    var posX = self.letterPos[self.selectionPos];
+    var posX = self.skillPos[self.selectedPos].pos;
     self.guiContext.beginPath();
     self.guiContext.strokeStyle = "white";
     self.guiContext.lineWidth = "1";
@@ -89,10 +94,11 @@ function GameGui(gameObject)
     return self.guiCanvas;
   }
 
-  this.printSkill = function(skill)
+  this.printSkill = function(skillIndex)
   {
-    var value = self.game.levelHandler.skills[skill];
-    var x = self.letterPos[skill];
+    var selectedSkill = self.skillPos[skillIndex].skill;
+    var value = self.game.levelHandler.skills[selectedSkill.value];
+    var x = self.skillPos[skillIndex].pos;
 
     this.printNumber(value, x);
   }
@@ -101,9 +107,16 @@ function GameGui(gameObject)
   this.printNumber = function(value, x)
   {
     var letterImg = self.guiContext.createImageData(8, 8);
-    self.letters.copyTo(letterImg, Math.floor(value / 10) * 2 + 1, 0, 0, 200);
-    self.letters.copyTo(letterImg, Math.floor(value % 10) * 2 + 0, 0, 0, 0);
 
+    if (value > 0)
+    {
+      self.letters.copyTo(letterImg, Math.floor(value % 10) * 2 + 0, 0, 0, 200);
+    }
+    if (Math.floor(value / 10) > 0)
+    {
+      self.letters.copyTo(letterImg, Math.floor(value / 10) * 2 + 1, 0, 0, 0);
+    }
+    
     self.guiContext.putImageData(letterImg, x + 4, 17);
   }
 
@@ -114,9 +127,9 @@ function GameGui(gameObject)
     {
       //- click on the skills panel
       var pos = Math.floor(x / 16);
-
+      
       switch (pos)
-      { 
+      {
         case 0:
           self.game.decReleaseRate();
           return true;
@@ -128,20 +141,67 @@ function GameGui(gameObject)
           return;
         case 11:
           return;
-       }
+      }
 
-       if ((pos > 1) && (pos < 10))
-       {
-         self.selectionPos = pos - 1;
-       }
-
+      if ((pos > 1) && (pos < 10))
+      {
+        self.selectedPos = pos;
+      }
      }
      else
      {
-     
+        //- click on the text above the panel
      }
+
+    return false;
   }
 
-  return false;
+
+
+
+
+  this.onClickLemming = function(lemmingIndex)
+  {
+    var lem = self.game.lemmings[lemmingIndex];
+
+    var selectedSkill = self.skillPos[self.selectedPos].skill;
+    if (selectedSkill == null) return;
+
+
+
+
+
+
+    var SKILL = self.game.SKILL;
+
+    switch (selectedSkill)
+    {
+      case SKILL.CLIMBER:
+        if (!lem.canClimb) lem.canClimb = true;
+        break;
+      case SKILL.FLOATER:
+        if (!lem.hasUmbrella) lem.hasUmbrella = true;
+        break;
+      case SKILL.BOMBER:
+        if (lem.ticksToDie >= 1000) lem.ticksToDie = self.game.TICKS_PER_SECOND * 5;
+        break;
+      case SKILL.BLOCKER:
+        lem.state = lem.STATE.BLOCKING;
+        break;
+      case SKILL.BUILDER:
+        lem.state = lem.STATE.BUILDING;
+        break;
+      case SKILL.BASHER:
+        lem.state = lem.STATE.BASHING;
+        break;
+      case SKILL.MINER:
+        lem.state = lem.STATE.MINING;
+        break;
+      case SKILL.DIGGER:
+        lem.state=lem.STATE.DIGGING;
+        break;
+    }   
+
+  }
 
 }
