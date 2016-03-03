@@ -166,7 +166,8 @@ function createGame(gameCavas, onGameLoaded)
     }
 
     game.releaseRate = game.levelHandler.releaseRate;
-    game.releaseRateMin = game.releaseRate;
+    game.releaseRateMin = game.levelHandler.releaseRate;
+    game.releaseCount = game.levelHandler.releaseCount;
   }
 
 
