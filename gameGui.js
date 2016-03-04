@@ -168,10 +168,6 @@ function GameGui(gameObject)
     if (selectedSkill == null) return;
 
 
-
-
-
-
     var SKILL = self.game.SKILL;
 
     switch (selectedSkill)
@@ -183,22 +179,22 @@ function GameGui(gameObject)
         if (!lem.hasUmbrella) lem.hasUmbrella = true;
         break;
       case SKILL.BOMBER:
-        if (lem.ticksToDie >= 1000) lem.ticksToDie = self.game.TICKS_PER_SECOND * 5;
+        lem.changeState(lem.STATE.BOMBING);
         break;
       case SKILL.BLOCKER:
-        lem.state = lem.STATE.BLOCKING;
+        lem.changeState(lem.STATE.BLOCKING);
         break;
       case SKILL.BUILDER:
-        lem.state = lem.STATE.BUILDING;
+        lem.changeState(lem.STATE.BUILDING);
         break;
       case SKILL.BASHER:
-        lem.state = lem.STATE.BASHING;
+        lem.changeState(lem.STATE.BASHING);
         break;
       case SKILL.MINER:
-        lem.state = lem.STATE.MINING;
+        lem.changeState(lem.STATE.MINING);
         break;
       case SKILL.DIGGER:
-        lem.state=lem.STATE.DIGGING;
+        lem.changeState(lem.STATE.DIGGING);
         break;
     }   
 
