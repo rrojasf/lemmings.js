@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Lemmings Remake</title>
+
+    <script type="text/javascript" src="dataReader.js"></script>
+    <script type="text/javascript" src="fileLoader.js"></script>
+    <script type="text/javascript" src="datFileReader.js"></script>
+    <script type="text/javascript" src="levelHandler.js"></script>
+    <script type="text/javascript" src="groundReader.js"></script>
+    <script type="text/javascript" src="levelImageProvider.js"></script>
+    <script type="text/javascript" src="levelDrawer.js"></script>
+    <script type="text/javascript" src="eventHandler.js"></script>
+    <script type="text/javascript" src="mainFileProvider.js"></script>
+    <script type="text/javascript" src="lemming.js"></script>
+    <script type="text/javascript" src="lemmingDrawer.js"></script>
+    <script type="text/javascript" src="gameGui.js"></script>
+    <script type="text/javascript" src="imageSet.js"></script>
+    <script type="text/javascript" src="colorPalette.js"></script>
+    <script type="text/javascript" src="codeGenerator.js"></script>
+    <script type="text/javascript" src="levelIndexProvider.js"></script>
+    <script type="text/javascript" src="triggerHandler.js"></script>
+    <script type="text/javascript" src="game.js"></script>
+
+
+    <script type="text/javascript" src="debug.js"></script>
+
+
+    <style> 
+      .PixelatedRendering {
+        image-rendering: optimizeSpeed;             /* Older versions of FF          */
+        image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */
+        image-rendering: -webkit-optimize-contrast; /* Safari                        */
+        image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
+        image-rendering: pixelated;                 /* Awesome future-browsers       */
+        -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
+        /* border: 5px solid #ddd; */
+      }
+
+      html, body {
+        width:  100%;
+        height: 100%;
+        margin: 0px;
+        background-color:black;
+      }
+
+
+    </style>
+
+    <script type="text/javascript" >
+    <!--
+
+      function onPageLoaded() {
+
+       var game = createGame(document.getElementById('gameCanvas'), onGameLoaded);
+
+       game.fullpage = true;
+
+       function onGameLoaded()
+       {
+         game.onGameOver = function(nextCode)
+         {
+           window.location.hash = "#"+ nextCode;
+           window.location.reload(false);
+         }
+
+         game.startGame();
+       }
+   
+      }
+    -->
+    </script>
+  </head>
+  <body onload="onPageLoaded();">
+    <canvas width="800" height="480" id="gameCanvas" class="PixelatedRendering">
+	Sorry! Your browser does not support HTML5 Canvas and can not run this Application.
+    </canvas>
+  </body>
+</html>

@@ -64,6 +64,8 @@ function createGame(gameCavas, onGameLoaded)
   };
 
   
+  game.fullpage = false;
+
   game.version = game.VERSION.LEMMINGS;
 
   game.isGameOver = false;
@@ -256,6 +258,34 @@ function createGame(gameCavas, onGameLoaded)
 
   game.doRendering = function()
   {
+    if (game.fullpage)
+    {
+      //- do we need to rescale the Canvas to the screen?
+      var needWith = window.innerWidth - 5;
+      var needHeight = window.innerHeight - 5;
+
+      if ((game.displayCanvas.width != needWith) || (game.displayCanvas.height != needHeight))
+      {
+        game.displayCanvas.width  = needWith;
+        game.displayCanvas.height =  needHeight;
+        game.displayContext.width = game.displayCanvas.width;
+        game.displayContext.height = game.displayCanvas.height;
+
+        //- rescaling the Canvas removes the "imageSmoothingEnabled" property... reset it!
+        if (typeof game.displayContext.imageSmoothingEnabled !== "undefined")
+        {
+          game.displayContext.imageSmoothingEnabled = false;
+        }
+        else
+        {
+          game.displayContext.mozImageSmoothingEnabled = false;
+          game.displayContext.webkitImageSmoothingEnabled = false;
+          game.displayContext.msImageSmoothingEnabled = false;
+        }
+      }
+    }
+
+    //- game rendering...
     var gameW = game.gameCanvas.width;
     var gameH = game.gameCanvas.height;
     var outW =  game.displayCanvas.width;
