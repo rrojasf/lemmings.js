@@ -2,7 +2,7 @@
 This is a [Lemmings](https://en.wikipedia.org/wiki/Lemmings_%28video_game%29) Clone/Remake using only HTML5 / Javascript. It uses the original .dat Files of the DOS game. No converting of Images and Levels is required.
 
 <div style="text-align:center">
-[Play](http://lemmings.hmilch.net/)
+<a href="http://lemmings.hmilch.net/">[play]</a>
 </div>
 
 This is a work in progress project and at the moment you can't play the game. Use the URL Fragment identifier (#) to select/load a Level e.g. [lemmings.js/main.html#10](http://lemmings.hmilch.net/release.html#10) for Level 10 or Levelcode e.g. [lemmings.js/main.html#CAJJLDLBCS](http://lemmings.hmilch.net/release.html#CAJJLDLBCS) for level 1.
