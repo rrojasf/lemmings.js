@@ -48,13 +48,15 @@
      
        function onGameLoaded()
        {
+         game.onGameOver = function(nextCode)
+         {
+           window.location.hash = "#"+ nextCode;
+           window.location.reload(false);
+         }
+
          game.startGame();
        }
-
-
-
-        
-
+   
       }
     -->
     </script>

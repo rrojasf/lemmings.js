@@ -173,7 +173,7 @@ function GameGui(gameObject)
       if (self.game.releasedCount <= self.game.savedCount + self.game.diedCount)
       {
         //- no more Lemmings left
-        alert("end of game!");
+        self.game.isGameOver = true;
       }
     }
   }

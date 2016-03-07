@@ -66,6 +66,8 @@ function createGame(gameCavas, onGameLoaded)
   
   game.version = game.VERSION.LEMMINGS;
 
+  game.isGameOver = false;
+
   game.TICKS_PER_SECOND = 14;
 
   //- current relese rate
@@ -76,6 +78,8 @@ function createGame(gameCavas, onGameLoaded)
   game.releasedCount = 0;
   game.savedCount = 0;
   game.diedCount = 0;
+
+  game.intervallId = 0;
 
   game.decReleaseRate = function()
   {
@@ -197,15 +201,26 @@ function createGame(gameCavas, onGameLoaded)
   game.startGame = function()
   {
     //- start game loop
-    window.setInterval(function() {game.gameLoop(); }, 1000 / game.TICKS_PER_SECOND);
+     game.intervallId = window.setInterval(function() {game.gameLoop(); }, 1000 / game.TICKS_PER_SECOND);
   }
 
 
 
   game.gameLoop = function()
   {
+    if (game.isGameOver)
+    {
+      //--- Game is over ----
+      if (typeof game.onGameOver !== "undefined")
+      {
+        window.clearInterval(game.intervallId);
+        game.onGameOver(game.codeGenerator.createCode(game.levelIndex + 1, 100));
+      }
+    }
+
     if (!game.isBreak)
     {
+      //---- Game is running... precess the next step/tick
       game.tick ++;
 
       if (game.releaseCount > 0)
