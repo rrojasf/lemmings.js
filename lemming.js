@@ -20,6 +20,7 @@ function Lemming(gameObject, x, y)
     PREUMBRELLA: {id:14, canSetState:false, isFalling:true,   name: "flying 2"},
     BOMBING  :   {id:15, canSetState:true,  isFalling:false,  name: "exploding"},
     SPLATTING:   {id:16, canSetState:false, isFalling:false,  name: "splatting"},
+    EXITING  :   {id:17, canSetState:true,  isFalling:false,  name: "leaving"},
   };
 
 
@@ -32,22 +33,49 @@ function Lemming(gameObject, x, y)
   this.hasUmbrella = false;
   this.canClimb = false;
   this.ticksToDie = 1000; //- if this number is 0 the lemming explode
-
+  this.triggerId1 = 0;
+  this.triggerId2 = 0;
 
   var self = this;
 
-  this.tick = function()
+  this.tick = function(gametick)
   {
     if (self.state.id <= 0) return;
 
     this.stateTicks++;
 
+    //- process Triggers    
+    var triggerState = self.game.triggerHandler.trigger(self.x, self.y, gametick);
+    if (triggerState != null)
+    {
+      var TRIGGERS = self.game.triggerHandler.TRIGGER;
+
+      switch (triggerState)
+      {
+        case TRIGGERS.EXIT:
+          self.changeState(self.STATE.EXITING);
+          break;
+        case TRIGGERS.BLOCKER_LEFT:
+          if ((self.state != self.STATE.BLOCKER) && (self.dir > 0)) self.dir = -1;
+          break;
+        case TRIGGERS.BLOCKER_RIGHT:
+          if ((self.state != self.STATE.BLOCKER) && (self.dir < 0)) self.dir = 1;
+          break;
+      }
+    }
+
+    if ((self.state == self.STATE.EXITING) && (this.stateTicks >= 8))
+    {
+      self.removeLem(true);
+    }
+
+    //- process explosion timeout
     if (self.ticksToDie < 1000)
     {
       self.ticksToDie--;
       if (self.ticksToDie ==   0) self.state = self.STATE.OHNO;
       if (self.ticksToDie == -16) self.state = self.STATE.EXPLODING;
-      if (self.ticksToDie <  -16) self.state = self.STATE.UNKNOWN;
+      if (self.ticksToDie <  -16) self.removeLem();
     }
 
     var lineLen1 = self.game.gameTerrain.width * 4;
@@ -242,12 +270,16 @@ function Lemming(gameObject, x, y)
   {
     switch (newState)
     {
+      case self.STATE.EXITING:
       case self.STATE.WALKING:
       case self.STATE.FALLING:
       case self.STATE.PREUMBRELLA:
       case self.STATE.UMBRELLA:
-        self.state = newState;
-        self.stateTicks = 0;
+        if (self.state != newState)
+        {
+          self.state = newState;
+          self.stateTicks = 0;
+        }
         return true;
 
       case self.STATE.BOMBING:
@@ -257,6 +289,15 @@ function Lemming(gameObject, x, y)
         return true;
 
       case self.STATE.BLOCKING:
+        if (!self.state.canSetState) return false;
+
+        self.state = newState;
+        self.stateTicks = 0;
+
+        self.triggerId1 = self.game.triggerHandler.add(self.x - 6, self.y, 1, -10, self.game.triggerHandler.TRIGGER.BLOCKER_LEFT);
+        self.triggerId2 = self.game.triggerHandler.add(self.x + 6, self.y, 1, -10, self.game.triggerHandler.TRIGGER.BLOCKER_RIGHT);
+        return true;
+
       case self.STATE.BUILDING:
       case self.STATE.DIGGING:
       case self.STATE.MINING:
@@ -277,11 +318,19 @@ function Lemming(gameObject, x, y)
 
   }
 
-  this.removeLem = function() 
+  this.removeLem = function(usedExit) 
   {
+    if (typeof usedExit !== "undefined") usedExit = false;
+
+    if (self.triggerId1 > 0) self.game.triggerHandler.remove(self.triggerId1);
+    if (self.triggerId2 > 0) self.game.triggerHandler.remove(self.triggerId2);
+  
     self.state = self.STATE.UNKNOWN;
     self.stateTicks = 0;
+
+    self.game.gameGui.removeLemming(usedExit);
   }
+
 
   this.calcDistance = function(destX, destY)
   {

@@ -155,6 +155,20 @@ function LevelImageProvider(gameObject)
   }
 
 
+  this.addTrigger = function(destTrigger, imageInfo)
+  {
+    var t = self.gData.iObjects[imageInfo.id];
+ 
+    if (t.trigger_effect_id == 0) return false;
+
+    console.log("ef: "+ t.trigger_effect_id);
+
+    var destX = imageInfo.x;
+    var destY = imageInfo.y;
+
+    destTrigger.add(destX + t.trigger_left, destY + t.trigger_top, t.trigger_width, t.trigger_height, t.trigger_effect_id);
+  }
+
 
   this.copyImageTo = function(destImg, index, imageInfo, tickIndex)
   {

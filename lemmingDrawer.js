@@ -48,7 +48,7 @@ function LemmingDrawer(gameObject)
     self.registerAnimation(state.PREUMBRELLA,-1, fr, 3, 16, 16, 4); //- pre-umbrella (l)
     self.registerAnimation(state.UMBRELLA,   -1, fr, 3, 16, 16, 4, true); //- umbrella (l)
     self.registerAnimation(state.SPLATTING,   0, fr, 2, 16, 10, 16); //- splatting
-    self.registerAnimation(state.UNKNOWN,     1, fr, 2, 16, 13, 8); //- exiting
+    self.registerAnimation(state.EXITING,     0, fr, 2, 16, 13, 8); //- exiting
     self.registerAnimation(state.UNKNOWN,     1, fr, 4, 16, 14, 14); //- fried
     self.registerAnimation(state.BLOCKING,    0, fr, 2, 16, 10, 16); //- blocking
     self.registerAnimation(state.UNKNOWN,     1, fr, 2, 16, 10, 8); //- shrugging (r)

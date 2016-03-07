@@ -78,10 +78,10 @@ function GroundReader(gameObject)
       ob.mask_loc = frO.readWordBE();
       ob.unknown1 = frO.readWordBE();
       ob.unknown2 = frO.readWordBE();
-      ob.trigger_left = frO.readWordBE();
-      ob.trigger_top = frO.readWordBE();
-      ob.trigger_width = frO.readByte();
-      ob.trigger_height = frO.readByte();
+      ob.trigger_left = frO.readWordBE() * 4;
+      ob.trigger_top = frO.readWordBE() * 4 - 4;
+      ob.trigger_width = frO.readByte() * 4;
+      ob.trigger_height = frO.readByte() * 4;
       ob.trigger_effect_id = frO.readByte();
       ob.image_loc = frO.readWordBE();
       ob.preview_image_index = frO.readWordBE();

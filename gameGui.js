@@ -157,7 +157,26 @@ function GameGui(gameObject)
   }
 
 
+  this.removeLemming = function(usedExit)
+  {
+    if (usedExit)
+    {
+      self.game.savedCount++;
+    }
+    else
+    {
+      self.game.diedCount++;
+    }
 
+    if (self.game.releaseCount <= 0)
+    {
+      if (self.game.releasedCount <= self.game.savedCount + self.game.diedCount)
+      {
+        //- no more Lemmings left
+        alert("end of game!");
+      }
+    }
+  }
 
 
   this.onClickLemming = function(lemmingIndex)
@@ -182,7 +201,7 @@ function GameGui(gameObject)
         lem.changeState(lem.STATE.BOMBING);
         break;
       case SKILL.BLOCKER:
-        lem.changeState(lem.STATE.BLOCKING);
+        lem.changeState(lem.STATE.BLOCKING );
         break;
       case SKILL.BUILDER:
         lem.changeState(lem.STATE.BUILDING);

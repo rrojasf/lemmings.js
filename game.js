@@ -66,13 +66,16 @@ function createGame(gameCavas, onGameLoaded)
   
   game.version = game.VERSION.LEMMINGS;
 
-  game.TICKS_PER_SECOND = 15;
+  game.TICKS_PER_SECOND = 14;
 
   //- current relese rate
   game.releaseRate = 50;
   game.releaseRateMin = 50;
   game.nextReleaseTick = 10;
   game.releaseCount = 3;
+  game.releasedCount = 0;
+  game.savedCount = 0;
+  game.diedCount = 0;
 
   game.decReleaseRate = function()
   {
@@ -156,6 +159,8 @@ function createGame(gameCavas, onGameLoaded)
   game.eventHandler = new EventHandler(game);
 
 
+  game.triggerHandler = new TriggerHandler(game);
+
   function onLevelLoaded()
   {
     game.levelDrawer = new LevelDrawer(game);
@@ -177,6 +182,8 @@ function createGame(gameCavas, onGameLoaded)
   {
     //- generate terrain layer
     game.levelDrawer.createTerrain();
+
+    game.levelDrawer.createObjectTrigger();
 
     game.gameGui = new GameGui(game);
     game.gameGui.load();
@@ -203,25 +210,28 @@ function createGame(gameCavas, onGameLoaded)
 
       if (game.releaseCount > 0)
       {
-      if (game.tick >= game.nextReleaseTick)
-      {
-        game.releaseCount--;
+        if (game.tick >= game.nextReleaseTick)
+        {
+          game.releaseCount--;
+          game.releasedCount++;
 
-        //- get the pos of the entry point
-        var pos = game.levelHandler.getEntryPos();
+          //- get the pos of the entry point
+          var pos = game.levelHandler.getEntryPos();
 
-        //- add one test lemming
-        game.lemmings.push(new Lemming(game, pos.x, pos.y));
+          //- add one lemming
+          game.lemmings.push(new Lemming(game, pos.x, pos.y));
   
-        //- next Lemming need to be released in ticks
-        game.nextReleaseTick = game.tick + (Math.floor((99 - game.releaseRate) / 2) + 4);
-      }
+          //- next Lemming need to be released in ticks
+          game.nextReleaseTick = game.tick + (Math.floor((99 - game.releaseRate) / 2) + 4);
+        }
       }
 
+
+      var tickNo = game.tick;
       var c = game.lemmings.length;
       for (var i = 0; i < c; i++)
       {
-        game.lemmings[i].tick();
+        game.lemmings[i].tick(tickNo);
       }
     }
 

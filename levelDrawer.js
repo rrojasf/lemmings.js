@@ -22,6 +22,7 @@ function LevelDrawer(gameObject)
 
     var iP = self.game.levelImageProvider;
 
+
     var lHT = lH.terrains;
     var tickNumber = self.game.tick;
 
@@ -36,6 +37,28 @@ function LevelDrawer(gameObject)
 
     return true;
   }
+
+
+  //- create new Object Trigger
+  this.createObjectTrigger = function()
+  {
+    var tH = self.game.triggerHandler;
+
+    var iP = self.game.levelImageProvider;
+
+    var lH = self.game.levelHandler;
+    var lHO = lH.objects;
+
+    for (var i = 0; i < lHO.length; i++)
+    {
+      var oInfo = lHO[i];
+      
+      iP.addTrigger(tH, oInfo);
+    }
+
+    return true;
+  }
+
 
   this.getObjects = function(img)
   {
