@@ -148,29 +148,35 @@ function createGame(gameCavas, onGameLoaded)
     }
   }
 
+
+  game.eventHandler = new EventHandler(game);
+
+  game.triggerHandler = new TriggerHandler(game);
+
+
   game.fileLoader = new FileLoader();
 
+  //- loading main.dat
   game.mainFileProvider = new MainFileProvider(game);
   game.mainFileProvider.load(function()
   {
     game.lemmingDrawer = new LemmingDrawer(game);
     game.lemmingDrawer.load();
 
+    //- creating GUI : requires main.dat
+    game.gameGui = new GameGui(game);
+    game.gameGui.load();
+
+    //- loading level01.dat
+    game.levelHandler = new LevelHandler(game);
+    game.levelHandler.load(onLevelLoaded, game.levelIndex);
+
   });
 
 
-  game.levelHandler = new LevelHandler(game);
-  game.levelHandler.load(onLevelLoaded, game.levelIndex);
-
-  game.eventHandler = new EventHandler(game);
-
-
-  game.triggerHandler = new TriggerHandler(game);
 
   function onLevelLoaded()
   {
-    game.levelDrawer = new LevelDrawer(game);
-    game.levelDrawer.load(onLevelDrawn);
     game.viewX = game.levelHandler.screenPositionX;
 
     for (var i = 0; i < 10; i++)
@@ -181,19 +187,22 @@ function createGame(gameCavas, onGameLoaded)
     game.releaseRate = game.levelHandler.releaseRate;
     game.releaseRateMin = game.levelHandler.releaseRate;
     game.releaseCount = game.levelHandler.releaseCount;
+
+
+    //- load GROUNDxO.DAT and VGAGRx.DAT
+    game.levelDrawer = new LevelDrawer(game);
+    game.levelDrawer.load(onLevelDrawerLoaded);
   }
 
 
-  function onLevelDrawn()
+  function onLevelDrawerLoaded()
   {
     //- generate terrain layer
     game.levelDrawer.createTerrain();
 
     game.levelDrawer.createObjectTrigger();
 
-    game.gameGui = new GameGui(game);
-    game.gameGui.load();
-
+    //- callback
     if (typeof onGameLoaded !== "undefined") onGameLoaded();
   }
 

@@ -4,23 +4,24 @@ function Lemming(gameObject, x, y)
 {
 
   this.STATE = {
-    UNKNOWN  :   {id:0,  canSetState:false, isFalling:false,  name: "unknown"},
-    WALKING  :   {id:1,  canSetState:true,  isFalling:false,  name: "walking"},
-    FALLING  :   {id:3,  canSetState:false, isFalling:true,   name: "fall"},
-    FLYING   :   {id:4,  canSetState:false, isFalling:true,   name: "falling"},
-    DIGGING  :   {id:5,  canSetState:true,  isFalling:false,  name: "digging"},
-    BLOCKING :   {id:6,  canSetState:false, isFalling:false,  name: "blocking"},
-    BUILDING :   {id:7,  canSetState:true,  isFalling:false,  name: "build"},
-    BASHING  :   {id:8,  canSetState:true,  isFalling:false,  name: "bush"},
-    MINING   :   {id:9,  canSetState:true,  isFalling:false,  name: "mining"},
-    CLIMBING :   {id:10, canSetState:false, isFalling:false,  name: "climbing"},
-    OHNO     :   {id:11, canSetState:false, isFalling:false,  name: "Oh No"},
-    EXPLODING:   {id:12, canSetState:false, isFalling:false,  name: "exploding"},
-    UMBRELLA :   {id:13, canSetState:false, isFalling:true,   name: "flying 1"},
-    PREUMBRELLA: {id:14, canSetState:false, isFalling:true,   name: "flying 2"},
-    BOMBING  :   {id:15, canSetState:true,  isFalling:false,  name: "exploding"},
-    SPLATTING:   {id:16, canSetState:false, isFalling:false,  name: "splatting"},
-    EXITING  :   {id:17, canSetState:true,  isFalling:false,  name: "leaving"},
+    UNKNOWN  :   {id:0,  canSetState:false, isFalling:false,  canFall:true, name: "unknown"},
+    WALKING  :   {id:1,  canSetState:true,  isFalling:false,  canFall:true, name: "walking"},
+    FALLING  :   {id:3,  canSetState:false, isFalling:true,   canFall:true, name: "fall"},
+    FLYING   :   {id:4,  canSetState:false, isFalling:true,   canFall:true, name: "falling"},
+    DIGGING  :   {id:5,  canSetState:true,  isFalling:false,  canFall:true, name: "digging"},
+    BLOCKING :   {id:6,  canSetState:false, isFalling:false,  canFall:true, name: "blocking"},
+    BUILDING :   {id:7,  canSetState:true,  isFalling:false,  canFall:true, name: "build"},
+    BASHING  :   {id:8,  canSetState:true,  isFalling:false,  canFall:true, name: "bush"},
+    MINING   :   {id:9,  canSetState:true,  isFalling:false,  canFall:true, name: "mining"},
+    CLIMBING :   {id:10, canSetState:false, isFalling:false,  canFall:true, name: "climbing"},
+    OHNO     :   {id:11, canSetState:false, isFalling:false,  canFall:true, name: "Oh No"},
+    EXPLODING:   {id:12, canSetState:false, isFalling:false,  canFall:true, name: "exploding"},
+    UMBRELLA :   {id:13, canSetState:false, isFalling:true,   canFall:true, name: "flying 1"},
+    PREUMBRELLA: {id:14, canSetState:false, isFalling:true,   canFall:true, name: "flying 2"},
+    BOMBING  :   {id:15, canSetState:true,  isFalling:false,  canFall:true, name: "exploding"},
+    SPLATTING:   {id:16, canSetState:false, isFalling:false,  canFall:true, name: "splatting"},
+    EXITING  :   {id:17, canSetState:false, isFalling:false,  canFall:false, name: "leaving"},
+    DROWNING :   {id:18, canSetState:false, isFalling:false,  canFall:false, name: "drowning"}
   };
 
 
@@ -44,6 +45,7 @@ function Lemming(gameObject, x, y)
 
     this.stateTicks++;
 
+
     //- process Triggers    
     var triggerState = self.game.triggerHandler.trigger(self.x, self.y, gametick);
     if (triggerState != null)
@@ -53,7 +55,7 @@ function Lemming(gameObject, x, y)
       switch (triggerState)
       {
         case TRIGGERS.EXIT:
-          self.changeState(self.STATE.EXITING);
+          self.changeState(self.STATE.EXITING, false);
           break;
         case TRIGGERS.BLOCKER_LEFT:
           if ((self.state != self.STATE.BLOCKER) && (self.dir > 0)) self.dir = -1;
@@ -61,12 +63,22 @@ function Lemming(gameObject, x, y)
         case TRIGGERS.BLOCKER_RIGHT:
           if ((self.state != self.STATE.BLOCKER) && (self.dir < 0)) self.dir = 1;
           break;
+        case TRIGGERS.DROWN:
+          self.changeState(self.STATE.DROWNING, false);
+          break;
       }
     }
 
     if ((self.state == self.STATE.EXITING) && (this.stateTicks >= 8))
     {
       self.removeLem(true);
+      return;
+    }
+
+    if ((self.state == self.STATE.DROWNING) && (this.stateTicks >= 16))
+    {
+      self.removeLem(true);
+      return;
     }
 
     //- process explosion timeout
@@ -75,7 +87,11 @@ function Lemming(gameObject, x, y)
       self.ticksToDie--;
       if (self.ticksToDie ==   0) self.state = self.STATE.OHNO;
       if (self.ticksToDie == -16) self.state = self.STATE.EXPLODING;
-      if (self.ticksToDie <  -16) self.removeLem();
+      if (self.ticksToDie <  -16) 
+      {
+        self.removeLem();
+        return;
+      }
     }
 
     var lineLen1 = self.game.gameTerrain.width * 4;
@@ -104,7 +120,7 @@ function Lemming(gameObject, x, y)
     }
 
     
-    if (data[dataPos + lineLen1] == 0)
+    if ((data[dataPos + lineLen1] == 0) && (self.state.canFall))
     {
       //- there is no ground below
 
@@ -254,11 +270,11 @@ function Lemming(gameObject, x, y)
 
         case self.STATE.MINING:
           self.y += 1;
-          self.x += 1;
+          self.x += self.dir;
           break;
 
         case self.STATE.BASHING:
-          self.x += 1;
+          self.x += self.dir;
           break;
       
 
@@ -275,6 +291,7 @@ function Lemming(gameObject, x, y)
       case self.STATE.FALLING:
       case self.STATE.PREUMBRELLA:
       case self.STATE.UMBRELLA:
+      case self.STATE.DROWNING:
         if (self.state != newState)
         {
           self.state = newState;

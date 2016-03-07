@@ -32,7 +32,7 @@ function LemmingDrawer(gameObject)
     self.registerAnimation(state.DIGGING,     0, fr, 3, 16, 14, 16); //- digging
     self.registerAnimation(state.CLIMBING,    1, fr, 2, 16, 12, 8); //- climbing (r)
     self.registerAnimation(state.CLIMBING,   -1, fr, 2, 16, 12, 8); //- climbing (l)
-    self.registerAnimation(state.UNKNOWN,     0, fr, 2, 16, 10, 16); //- drowning
+    self.registerAnimation(state.DROWNING,    0, fr, 2, 16, 10, 16); //- drowning
     self.registerAnimation(state.UNKNOWN,     1, fr, 2, 16, 12, 8); //- post-climb (r)
     self.registerAnimation(state.UNKNOWN,    -1, fr, 2, 16, 12, 8); //- post-climb (l)
     self.registerAnimation(state.BUILDING,    1, fr, 3, 16, 13, 16); //- brick-laying (r)
