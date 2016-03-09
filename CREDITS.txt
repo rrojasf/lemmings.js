@@ -6,7 +6,7 @@ Thanks to:
 - rt for providing information about the Level-File-Format
 - ericlangedijk for his Lemmix-clone at http://ericenzwaan.nl/eric/lemmings/lemmix.htm
 - The Lemmings Archive for providing all this resources at http://www.camanis.net/lemmings/tools.php
-
+- Herman Perks for his "Lemmings code generator"
 
 Original credits...
     Lemmings by DMA Design
