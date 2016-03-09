@@ -1,3 +1,8 @@
+/// This file is part of "Lemmings.js" project, which is made available under the terms of the MIT License (MIT). Note the file "LICENSE" for license and warranty information.
+/// 
+/// The DatFileReader Class is used for uncompressing of ".dat" Files and providing there sections by calling "this.getPart(sectionIndex)".
+///
+
 function DatFileReader(gameObject)
 {
   ///------------------------
@@ -61,7 +66,7 @@ function DatFileReader(gameObject)
   function OutWriter(bitReader, outLength)
   {
     this.bitReader = bitReader;
-    this.outData = new Array(outLength);
+    this.outData = new Uint8Array(outLength);
     this.outPos = outLength;
     var self = this;
 

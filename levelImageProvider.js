@@ -1,5 +1,8 @@
-///------------------------
-/// Class LevelImageProvider
+/// This file is part of "Lemmings.js" project, which is made available under the terms of the MIT License (MIT). Note the file "LICENSE" for license and warranty information.
+/// 
+/// The LevelImageProvider Class provides images for the map objects (Ground and Objects like Exit and Water) loaded from the "VGAGRx.DAT" files.
+///  It also provides the trigger-information of the objects.
+///
 function LevelImageProvider(gameObject)
 {
   this.game = gameObject;
@@ -161,7 +164,7 @@ function LevelImageProvider(gameObject)
  
     if (t.trigger_effect_id == 0) return false;
 
-    console.log("ef: "+ t.trigger_effect_id);
+    //console.log("ef: "+ t.trigger_effect_id);
 
     var destX = imageInfo.x;
     var destY = imageInfo.y;
