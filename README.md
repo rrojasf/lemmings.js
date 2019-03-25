@@ -1,6 +1,6 @@
 # Lemmings.js [deprecated]
 
-see the new Version 🎉 [lemmings.ts](https://github.com/tomsoftware/lemmings.ts)
+🎉 see the new Version [lemmings.ts](https://github.com/tomsoftware/lemmings.ts)
 
 ___
 
