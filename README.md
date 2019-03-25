@@ -1,4 +1,7 @@
-# Lemmings.js
+# Lemmings.js [deprecated]
+
+see the new Version [lemmings.ts](https://github.com/tomsoftware/lemmings.ts)
+
 This is a [Lemmings](https://en.wikipedia.org/wiki/Lemmings_%28video_game%29) Clone/Remake using only HTML5 / Javascript. It uses the original .dat Files of the DOS game. No converting of Images and Levels is required.
 
 <p style="text-align:center" align="center">
