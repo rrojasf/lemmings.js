@@ -1,4 +1,4 @@
-# Lemmings.js [deprecated]
+# Lemmings.js [legacy]
 
 🎉 see the new Version [lemmings.ts](https://github.com/tomsoftware/lemmings.ts)
 
